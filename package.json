@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/Cxlopez/tinyapp/issues"
   },
-  "homepage": "https://github.com/Cxlopez/tinyapp#readme"
+  "homepage": "https://github.com/Cxlopez/tinyapp#readme",
+  "dependencies": {
+    "express": "^4.18.0"
+  }
 }
