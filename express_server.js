@@ -21,6 +21,15 @@ function generateRandomString() {
   return randomString;
 }
 
+const ifUserExists = (email, database) => {
+  for (const user in users) {
+    if (database[user].email === email) {
+      return database[user];
+    }
+  }
+  return undefined;
+};
+
 app.set("view engine", "ejs");
 
 const urlDatabase = {
@@ -92,14 +101,22 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 });
 
 app.post("/register", (req, res) => {
-  const userID = generateRandomString();
-  users[userID] = {
-    userID,
-    email: req.body.email,
-    password: req.body.password
-  };
-  res.cookie("user_id", userID);
-  res.redirect('/urls');
+  const email = req.body.email;
+  const password = req.body.password;
+  if (!email || !password) {
+    res.status(400).send({message: "Please give valid Email & Password."});
+  } else if (ifUserExists(email, users)) {
+    res.status(400).send({message: "Email is already registered."});
+  } else {
+    const userID = generateRandomString();
+    users[userID] = {
+      userID,
+      email: req.body.email,
+      password: req.body.password
+    };
+    res.cookie("user_id", userID);
+    res.redirect('/urls');
+  }
 });
 
 app.get("/u/:shortURL", (req, res) => {
