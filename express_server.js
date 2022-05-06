@@ -95,7 +95,7 @@ app.post("/login", (req, res) => {
       res.status(403).send("Invalid password.");
     }
   } else {
-    res.status(403).send("Email no registered.");
+    res.status(403).send("Email not registered.");
   }
 });
 

@@ -11,8 +11,8 @@
         <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
         </span>
         <% if (!user) {%>
-          <a class="btn btn-primary" href="/login">Login</a>
-              <a class="btn btn-primary" href="/register">Register</a>
+          <a class="btn btn-primary" style="margin-left: 300px;" href="/login">Login</a>
+          <a class="btn btn-primary" href="/register">Register</a>
           <% } else { %>
             <form method="post" action="/logout">
               <div>
