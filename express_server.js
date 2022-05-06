@@ -83,6 +83,20 @@ app.post("/login", (req, res) => {
   res.redirect("/urls");
 });
 
+app.post("/login", (req, res) => {
+  const user = ifUserExists(req.body.email, users);
+  if (user) {
+    if (req.body.password === user.password) {
+      res.cookie("user_id", user.userID);
+      res.redirect("/urls");
+    } else {
+      res.status(403).send("Invalid password.");
+    }
+  } else {
+    res.status(403).send("Email no registered.");
+  }
+});
+
 app.post("/logout", (req, res) => {
   res.clearCookie("user_id");
   res.redirect("/urls");
