@@ -10,8 +10,9 @@
         <a class="nav-item nav-link" href="/urls">My URLs</a>
         <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
         </span>
+        <div class="">
         <% if (!user) {%>
-          <a class="btn btn-primary" style="margin-left: 300px;" href="/login">Login</a>
+          <a class="btn btn-primary" href="/login">Login</a>
           <a class="btn btn-primary" href="/register">Register</a>
           <% } else { %>
             <form method="post" action="/logout">
@@ -23,6 +24,7 @@
               </div>
             </form>
             <% } %>
+      </div>
       </div>
     </div>
   </nav>

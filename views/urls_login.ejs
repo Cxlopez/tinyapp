@@ -19,12 +19,14 @@
   </head>
   <main style="margin: 1em;">
     <h3>Login</h3>
-    <form method="post" action="/login">
-      <label for="email">Email Address</label>
-      <input type="email" name="email" placeholder="Enter email">
-      <label for="password">Password</label>
-      <input type="password" name="password" placeholder="Enter password">
-      <button type="submit" class="btn btn-primary">Login</button>
+    <form method="POST" action="/login">
+      <div class="form-group mb-2">
+        <label for="email">Email Address</label>
+        <input class="form-control mb-3" type="email" name="email" placeholder="Enter email" style="width: 300px;">
+        <label for="password">Password</label>
+        <input class="form-control mb-3" type="password" name="password" placeholder="Enter password" style="width: 300px;">
+        <button type="submit" class="btn btn-primary">Login</button>
+      </div>  
     </form>
   </main>
 
