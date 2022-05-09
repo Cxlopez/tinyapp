@@ -91,6 +91,10 @@ app.get("/urls", (req, res) => {
     user: users[uID],
     urls: userUrls
   };
+  if (!uID) {
+    res.send("Login or register to continue.");
+    return;
+  }
   res.render("urls_index", templateVars);
 });
 
@@ -101,7 +105,7 @@ app.post("/urls", (req, res) => {
   }
   const longURL = req.body.longURL;
   const shortURL = generateRandomString(6);
-  urlDatabase[shortURL] = {longURL};
+  urlDatabase[shortURL] = {longURL, userID: req.cookies["user_id"]};
   res.redirect(`/urls/${shortURL}`);
 });
 
@@ -137,14 +141,15 @@ app.post("/urls/:shortURL/update", (req, res) => {
     return;
   }
   const url = urlDatabase[req.params.shortURL];
-  if (url.userID !== req.cookies["user_id"]) {
+  if (req.cookies["user_id"] !== req.cookies["user_id"]) {
     res.send("no2");
     return;
   }
 
   const shortURL = req.params.shortURL;
   const longURL = req.body.longURL;
-  urlDatabase[shortURL] = {longURL};
+  const userID = req.cookies["user_id"];
+  urlDatabase[shortURL] = {longURL, userID};
   res.redirect("/urls");
 });
 
