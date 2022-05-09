@@ -32,14 +32,7 @@ function generateRandomString() {
   return randomString;
 }
 
-const ifUserExists = (email, database) => {
-  for (const user in users) {
-    if (database[user].email === email) {
-      return database[user];
-    }
-  }
-  return undefined;
-};
+const { ifUserExists } = require("./helper");
 
 const urlsForUser = (id, database) => {
   let usersUrl = {};
