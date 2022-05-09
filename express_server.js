@@ -3,6 +3,8 @@ const express = require("express");
 const app = express();
 const PORT = 8080;
 
+const bcrypt = require('bcryptjs');
+
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -119,7 +121,7 @@ app.get("/login", (req, res) => {
 app.post("/login", (req, res) => {
   const user = ifUserExists(req.body.email, users);
   if (user) {
-    if (req.body.password === user.password) {
+    if (bcrypt.compareSync(req.body.password, user.password)) {
       res.cookie("user_id", user.userID);
       res.redirect("/urls");
     } else {
@@ -209,8 +211,9 @@ app.get('/register', (req, res) => {
 
 app.post("/register", (req, res) => {
   const email = req.body.email;
-  const password = req.body.password;
-  if (!email || !password) {
+  const hashedPassword = bcrypt.hashSync(req.body.password, 10);
+  console.log(users);
+  if (!email || !hashedPassword) {
     res.status(400).send({message: "Please give valid Email & Password."});
   } else if (ifUserExists(email, users)) {
     res.status(400).send({message: "Email is already registered."});
@@ -219,7 +222,7 @@ app.post("/register", (req, res) => {
     users[userID] = {
       userID,
       email: req.body.email,
-      password: req.body.password
+      password: hashedPassword
     };
     res.cookie("user_id", userID);
     res.redirect('/urls');
