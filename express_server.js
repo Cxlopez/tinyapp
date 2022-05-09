@@ -32,7 +32,7 @@ function generateRandomString() {
   return randomString;
 }
 
-const { ifUserExists } = require("./helper");
+const { ifUserExists } = require("./helpers");
 
 const urlsForUser = (id, database) => {
   let usersUrl = {};
