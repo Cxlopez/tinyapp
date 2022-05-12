@@ -111,6 +111,10 @@ app.get("/login", (req, res) => {
 
 //For logging in
 app.post("/login", (req, res) => {
+  const password = req.body.password;
+  const email = req.body.email;
+  if (!password || !email) return res.status(400).send({message: "Please give valid Email & Password."});
+
   const user = ifUserExists(req.body.email, users);
   if (user) {
     if (bcrypt.compareSync(req.body.password, user.password)) {
@@ -134,7 +138,7 @@ app.post("/logout", (req, res) => {
 //For updating already existing url
 app.post("/urls/:shortURL/update", (req, res) => {
   if (!req.session.user_id) {
-    res.send("no");
+    res.send("You do not have authorization to this URL.");
     return;
   }
   const shortURL = req.params.shortURL;
@@ -147,12 +151,12 @@ app.post("/urls/:shortURL/update", (req, res) => {
 //For deleting url
 app.post("/urls/:shortURL/delete", (req, res) => {
   if (!req.session.user_id) {
-    res.send("No");
+    res.send("You do not have authorization to this URL.");
     return;
   }
   const url = urlDatabase[req.params.shortURL];
   if (url.userID !== req.session.user_id) {
-    res.send("No2");
+    res.send("You do not have authorization to this URL.");
     return;
   }
 
@@ -204,13 +208,14 @@ app.get('/register', (req, res) => {
 //redirects to urls index
 app.post("/register", (req, res) => {
   const email = req.body.email;
-  const hashedPassword = bcrypt.hashSync(req.body.password, 10);
-  console.log(users);
-  if (!email || !hashedPassword) {
+  const password = req.body.password;
+  
+  if (!email || !password) {
     res.status(400).send({message: "Please give valid Email & Password."});
   } else if (ifUserExists(email, users)) {
     res.status(400).send({message: "Email is already registered."});
   } else {
+    const hashedPassword = bcrypt.hashSync(req.body.password, 10);
     const userID = generateRandomString();
     users[userID] = {
       userID,
