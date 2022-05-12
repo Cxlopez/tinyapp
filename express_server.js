@@ -3,7 +3,7 @@
 const bcrypt = require('bcryptjs');
 const express = require('express');
 const bodyParser = require("body-parser");
-const { ifUserExists } = require("./helpers");
+const { ifUserExists, generateRandomString, urlsForUser } = require("./helpers");
 
 //Setup
 const PORT = 8080;
@@ -21,34 +21,6 @@ app.use(cookieSession({
   // Cookie Options
   maxAge: 24 * 60 * 60 * 1000 // 24 hours
 }));
-
-
-
-//generates random string for shortURl
-// eslint-disable-next-line func-style
-function generateRandomString() {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789';
-  let randomString = ' ';
-  let charactersLength = characters.length;
-
-  for (let i = 0; i < 6; i++) {
-    randomString += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return randomString;
-}
-
-
-
-const urlsForUser = (id, database) => {
-  let usersUrl = {};
-
-  for (const shortURL in database) {
-    if (database[shortURL].userID === id) {
-      usersUrl[shortURL] = database[shortURL];
-    }
-  }
-  return usersUrl;
-};
 
 
 //Url database
